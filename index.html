@@ -1,0 +1,572 @@
+<!--
+  DESIGN PLAN
+
+  Subject: a healthcare-communications portfolio built around two registers
+  the same writer works in — regulated IR press releases (team-authored,
+  high-stakes) and executive/social storytelling on LinkedIn (solo-authored,
+  including MLR routing). The visual world borrows from clinical filings and
+  drug-development pathways without tipping into a literal document pastiche.
+
+  Color (named):
+    --paper   #F2F5F3  cool, faintly clinical off-white ground
+    --ink     #12232A  deep teal-black, primary text
+    --ink-soft #4B5D62 muted teal-grey, secondary text
+    --teal    #0E7C86  primary accent — precision / regulated track
+    --teal-deep #0A5960 hover state for teal
+    --amber   #B8862E  secondary accent — human / independent track
+    --line    #D8DFDC  hairline rule
+
+  Type:
+    Display — Fraunces (optical, literary authority) for name + headlines
+    Body — IBM Plex Sans (technical-adjacent, pharma-appropriate) for prose
+    Mono — IBM Plex Mono (datelines, tags, nav) for structured metadata
+
+  Layout: a narrow ~760px document column for hero/approach/contact (reads
+  like a filing), opening into a full-width left-rail timeline for the
+  press releases (drug-development pathway motif, chronological — order
+  carries real information here) and a two-column card grid for the
+  LinkedIn posts (social register, looser grid).
+-->
+<title>Keenan Conley</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2F5F3;
+    --paper-raised: #FFFFFF;
+    --ink: #12232A;
+    --ink-soft: #4B5D62;
+    --teal: #0E7C86;
+    --teal-deep: #0A5960;
+    --amber: #A9762A;
+    --line: #D8DFDC;
+    --focus: #0E7C86;
+    --shadow: 0 1px 2px rgba(18,35,42,0.04), 0 8px 24px rgba(18,35,42,0.06);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0E1618;
+      --paper-raised: #142023;
+      --ink: #E7EDEA;
+      --ink-soft: #96A9A5;
+      --teal: #4FC2C9;
+      --teal-deep: #7BD6DB;
+      --amber: #E0AC55;
+      --line: #24332F;
+      --focus: #4FC2C9;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0E1618;
+    --paper-raised: #142023;
+    --ink: #E7EDEA;
+    --ink-soft: #96A9A5;
+    --teal: #4FC2C9;
+    --teal-deep: #7BD6DB;
+    --amber: #E0AC55;
+    --line: #24332F;
+    --focus: #4FC2C9;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 {
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 500;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 500;
+  }
+
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .doc-col {
+    max-width: 700px;
+  }
+
+  /* ---------- nav ---------- */
+  header.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+  .nav-mark {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--teal); border-color: var(--teal); }
+  @media (max-width: 620px) {
+    .nav-links { gap: 16px; }
+    .nav-links li:nth-child(3) { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 76px 0 64px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    line-height: 1.02;
+    margin: 14px 0 22px;
+  }
+  .hero .lede {
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    max-width: 620px;
+    margin: 0 0 24px;
+  }
+  .hero .bio {
+    max-width: 620px;
+    color: var(--ink-soft);
+    margin: 0 0 26px;
+  }
+  .focus-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .focus-row span:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-left: 22px;
+    vertical-align: middle;
+  }
+
+  /* ---------- section shell ---------- */
+  section.block { padding: 72px 0; border-bottom: 1px solid var(--line); }
+  section.block:last-of-type { border-bottom: none; }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 8px;
+    max-width: 700px;
+  }
+  .section-head h2 { font-size: 2rem; }
+  .section-note {
+    max-width: 620px;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    margin: 10px 0 48px;
+  }
+  .section-index {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- press release timeline ---------- */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: var(--line);
+  }
+  .t-item {
+    position: relative;
+    padding-left: 44px;
+    margin-bottom: 44px;
+  }
+  .t-item:last-child { margin-bottom: 0; }
+  .t-node {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--teal);
+  }
+  .t-date {
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+  }
+  .t-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px 26px;
+    box-shadow: var(--shadow);
+  }
+  .t-tag {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal-deep);
+    background: color-mix(in srgb, var(--teal) 12%, transparent);
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 12px;
+  }
+  .t-card h3 {
+    font-size: 1.28rem;
+    margin-bottom: 10px;
+  }
+  .t-card p {
+    color: var(--ink-soft);
+    margin: 0 0 16px;
+    max-width: 62ch;
+  }
+  .t-link {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    text-decoration: none;
+    color: var(--teal-deep);
+    border-bottom: 1px solid color-mix(in srgb, var(--teal) 45%, transparent);
+    padding-bottom: 1px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .t-link:hover { color: var(--teal); border-color: var(--teal); }
+
+  /* ---------- linkedin grid ---------- */
+  .li-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 700px) { .li-grid { grid-template-columns: 1fr; } }
+  .li-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px 26px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .li-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--amber) 14%, transparent);
+    color: var(--amber);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .li-icon svg { width: 18px; height: 18px; }
+  .li-card h3 { font-size: 1.14rem; }
+  .li-card p { color: var(--ink-soft); margin: 0; flex-grow: 1; }
+  .li-tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .li-link {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    text-decoration: none;
+    color: var(--amber);
+    border-bottom: 1px solid color-mix(in srgb, var(--amber) 45%, transparent);
+    padding-bottom: 1px;
+    align-self: flex-start;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .li-link:hover { color: var(--teal); border-color: var(--teal); }
+
+  /* ---------- approach ---------- */
+  .approach p { max-width: 66ch; color: var(--ink-soft); margin: 0 0 18px; }
+  .approach p:last-child { margin-bottom: 0; }
+  .approach strong { color: var(--ink); font-weight: 500; }
+
+  /* ---------- contact / footer ---------- */
+  footer {
+    padding: 56px 0 64px;
+  }
+  footer h2 { font-size: 1.9rem; margin-bottom: 14px; }
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+  }
+  .btn-primary {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    color: var(--paper);
+    background: var(--ink);
+    padding: 12px 20px;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+  }
+  .btn-primary:hover { background: var(--teal-deep); }
+  .foot-note {
+    margin-top: 40px;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<header class="site-nav">
+  <nav class="nav-row">
+    <span class="nav-mark">Keenan Conley</span>
+    <ul class="nav-links">
+      <li><a href="#releases">Releases</a></li>
+      <li><a href="#linkedin">LinkedIn</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="doc-col">
+      <p class="eyebrow">Healthcare Communications</p>
+      <h1>Keenan Conley</h1>
+      <p class="lede">I turn a clinical trial result, a reimbursement win, or an executive's talking points into language a regulator will clear, an investor will trust, and a stranger will engage with.</p>
+      <p class="bio">Most recently Global Communications Specialist at Zai Lab, a global biotech, where I owned regulated disclosures on clinical and market-access milestones and independently wrote executive and social storytelling for LinkedIn, from first draft through MLR review and agency coordination.</p>
+      <div class="focus-row">
+        <span>Regulated Announcements</span>
+        <span>Clinical Development Narrative</span>
+        <span>Executive Storytelling</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="releases">
+    <div class="section-head">
+      <h2>Regulated Announcements</h2>
+      <span class="section-index mono">01 · Press Releases</span>
+    </div>
+    <p class="section-note">Five releases, chronologically, tracing a market-access milestone and a molecule's path from first data to Phase 3. Each was written and edited with my manager, on a two-person communications team, then cleared through Zai Lab's broader medical-legal-regulatory review, as disclosures on regulated, high-stakes news require.</p>
+
+    <div class="timeline">
+
+      <div class="t-item">
+        <span class="t-node"></span>
+        <div class="t-date mono">December 12, 2023</div>
+        <div class="t-card">
+          <span class="t-tag">Market Access</span>
+          <h3>First-Ever NRDL Listing for VYVGART</h3>
+          <p>Reported the first-time inclusion of VYVGART&reg; (efgartigimod alfa) on China's National Reimbursement Drug List for generalized myasthenia gravis, alongside renewed listings for NUZYRA and ZEJULA, expanding access to three medicines at reduced cost nationwide.</p>
+          <a class="t-link" href="https://ir.zailaboratory.com/news-releases/news-release-details/zai-lab-announces-first-listing-vyvgartr-efgartigimod-alfa/" target="_blank" rel="noopener">Read the release ↗</a>
+        </div>
+      </div>
+
+      <div class="t-item">
+        <span class="t-node"></span>
+        <div class="t-date mono">June 2, 2025</div>
+        <div class="t-card">
+          <span class="t-tag">Clinical Development</span>
+          <h3>Phase 1 Data for ZL-1310 at ASCO</h3>
+          <p>Announced Phase 1 results for ZL-1310, a DLL3-targeted antibody-drug conjugate, in heavily pretreated small cell lung cancer. The data showed a 79% response rate at the optimal dose and a manageable safety profile, setting up a pivotal trial later that year.</p>
+          <a class="t-link" href="https://ir.zailaboratory.com/news-releases/news-release-details/zai-lab-presents-positive-phase-1-data-zl-1310-dll3-targeted-adc/" target="_blank" rel="noopener">Read the release ↗</a>
+        </div>
+      </div>
+
+      <div class="t-item">
+        <span class="t-node"></span>
+        <div class="t-date mono">October 13, 2025</div>
+        <div class="t-card">
+          <span class="t-tag">Clinical Development</span>
+          <h3>Late-Breaking Data Heads to AACR-NCI-EORTC</h3>
+          <p>Previewed an oral presentation of updated Phase 1 data for zocilurtatug pelitecan (ZL-1310) ahead of the AACR-NCI-EORTC conference, with a Phase 3 registrational study planned before year-end.</p>
+          <a class="t-link" href="https://ir.zailaboratory.com/news-releases/news-release-details/zai-lab-announces-oral-presentation-updated-data-global-phase-1/" target="_blank" rel="noopener">Read the release ↗</a>
+        </div>
+      </div>
+
+      <div class="t-item">
+        <span class="t-node"></span>
+        <div class="t-date mono">October 24, 2025</div>
+        <div class="t-card">
+          <span class="t-tag">Clinical Development</span>
+          <h3>Phase 3 Launch for Zocilurtatug Pelitecan</h3>
+          <p>Reported deepened Phase 1 results, including an 80% response rate in patients with untreated brain metastases, and the initiation of a roughly 665-patient global Phase 3 trial in small cell lung cancer.</p>
+          <a class="t-link" href="https://ir.zailaboratory.com/news-releases/news-release-details/zai-lab-announces-updated-phase-1-data-zocilurtatug-pelitecan/" target="_blank" rel="noopener">Read the release ↗</a>
+        </div>
+      </div>
+
+      <div class="t-item">
+        <span class="t-node"></span>
+        <div class="t-date mono">December 7, 2025</div>
+        <div class="t-card">
+          <span class="t-tag">Market Access</span>
+          <h3>NRDL Renewal, Two Years Later</h3>
+          <p>Closed the loop on the access story from 2023: VYVGART, NUZYRA, and ZEJULA all renewed on the 2025 NRDL, bringing the company's total reimbursed products in China to six.</p>
+          <a class="t-link" href="https://ir.zailaboratory.com/news-releases/news-release-details/zai-lab-announces-updates-chinas-national-reimbursement-drug" target="_blank" rel="noopener">Read the release ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block wrap" id="linkedin">
+    <div class="section-head">
+      <h2>Independent Storytelling</h2>
+      <span class="section-index mono">02 · LinkedIn</span>
+    </div>
+    <p class="section-note">Five posts written independently, including owning MLR routing and coordinating creative assets with our agency. Where an executive is featured, I helped prepare talking points for the interview or ghostwrote the post in their voice.</p>
+
+    <div class="li-grid">
+
+      <div class="li-card">
+        <span class="li-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M9 21h6"/></svg>
+        </span>
+        <span class="li-tag">Executive Media</span>
+        <h3>Translating the Fierce Biotech Podcast</h3>
+        <p>Prepared our COO for the interview, then wrote the post translating his talking points for a public audience.</p>
+        <a class="li-link" href="https://www.linkedin.com/posts/zai-lab_fierce-biotech-podcast-activity-7417188787044270080-vfsL" target="_blank" rel="noopener">View post ↗</a>
+      </div>
+
+      <div class="li-card">
+        <span class="li-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </span>
+        <span class="li-tag">Executive Ghostwriting</span>
+        <h3>Setting the Agenda for ASCO 2026</h3>
+        <p>Ghostwrote this post in our COO's voice, distilling five dense trial previews (from a RAS(ON) inhibitor in pancreatic cancer to a TROP2 ADC in triple-negative breast cancer) into the studies he was personally most eager to see.</p>
+        <a class="li-link" href="https://lnkd.in/p/gXuTNd-K" target="_blank" rel="noopener">View post ↗</a>
+      </div>
+
+      <div class="li-card">
+        <span class="li-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>
+        </span>
+        <span class="li-tag">Partnership</span>
+        <h3>Five Years with argenx</h3>
+        <p>Wrote the post marking five years of the argenx collaboration.</p>
+        <a class="li-link" href="https://www.linkedin.com/posts/zai-lab_collaboration-lifesciences-biotech-activity-7429510026874228736-zTz3" target="_blank" rel="noopener">View post ↗</a>
+      </div>
+
+      <div class="li-card">
+        <span class="li-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/><path d="M9 21h6"/></svg>
+        </span>
+        <span class="li-tag">Executive Media</span>
+        <h3>Previewing the Denatured Podcast</h3>
+        <p>Prepared our COO ahead of his appearance, then wrote the post highlighting the conversation.</p>
+        <a class="li-link" href="https://www.linkedin.com/posts/zai-lab_biotech-innovation-podcast-activity-7407522077957578754-7uVk" target="_blank" rel="noopener">View post ↗</a>
+      </div>
+
+      <div class="li-card">
+        <span class="li-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8.2 7.3 10.5 15.5M15.8 7.3 13.5 15.5M8.5 6h7"/></svg>
+        </span>
+        <span class="li-tag">Science Explainer</span>
+        <h3>Breaking Down How ADCs Work</h3>
+        <p>Explained how antibody-drug conjugates work, pairing a cancer-targeting antibody with a chemotherapy payload, timed to our presence at the ADC Summit in South Korea.</p>
+        <a class="li-link" href="https://www.linkedin.com/posts/zai-lab_adc-explainer-activity-7470867457780416514-J4Xj" target="_blank" rel="noopener">View post ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="block wrap approach" id="approach">
+    <div class="doc-col">
+      <div class="section-head">
+        <h2>Approach</h2>
+        <span class="section-index mono">03 · Working Style</span>
+      </div>
+      <p style="margin-top: 24px;">Healthcare communications runs on two clocks at once. A press release moves through legal, medical, and regulatory review before a single word reaches an investor; precision isn't a preference there, it's the job. A LinkedIn post has to move fast enough to matter while still surviving the same scrutiny. I worked both sides at Zai Lab: <strong>co-authoring regulated disclosures</strong> on clinical data and market access within a cross-functional team, and <strong>independently producing</strong> executive and social content, including owning MLR routing and coordinating creative with our agency end to end.</p>
+      <p>The throughline is translation. A Phase 1 response rate and a five-year partnership anniversary are different kinds of news, but both have to land the same way: accurate enough for a regulator, clear enough for an investor, and human enough for anyone else reading.</p>
+    </div>
+  </section>
+
+  <footer class="wrap" id="contact">
+    <div class="doc-col">
+      <p class="eyebrow">Get in touch</p>
+      <h2>Let's talk about healthcare comms.</h2>
+      <p style="color: var(--ink-soft); max-width: 56ch;">Actively looking for my next healthcare communications role. Happy to walk through any of the work above, or talk through how it'd translate to your team.</p>
+      <div class="contact-row">
+        <a class="btn-primary" href="mailto:kac385@georgetown.edu">kac385@georgetown.edu</a>
+        <a class="t-link" href="https://www.linkedin.com/in/keenan-conley-bb02901b4/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <p class="foot-note">Portfolio compiled August 2026 · Press releases co-authored with the Zai Lab communications team · LinkedIn posts written independently</p>
+    </div>
+  </footer>
+</main>
